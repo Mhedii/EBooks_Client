@@ -5,6 +5,7 @@ import {
   BsTwitter,
   BsInstagram,
 } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 const Footer = () => {
   const date = new Date();
   const year = date.getFullYear();
@@ -13,9 +14,11 @@ const Footer = () => {
       <footer className="  container footer py-10 bg-base-200 text-base-content grid grid-cols-4">
         <div className="row-span-2">
           <div className="mb-4 ">
-            <a className="text-4xl font-semibold">
-              <span className="text-red-600 ">E</span>Books
-            </a>
+            <Link to="/">
+              <a className="text-4xl font-semibold">
+                <span className="text-red-600 ">E</span>Books
+              </a>
+            </Link>
           </div>
           <span className="footer-title">Shop By</span>
           <a className="link link-hover">Book Category</a>
@@ -57,11 +60,11 @@ const Footer = () => {
           </div>
           <br />
           <div className="grid grid-flow-col text-2xl gap-4">
-            <BsLinkedin />
-            <BsYoutube />
-            <BsFacebook />
-            <BsInstagram />
-            <BsTwitter />
+            <BsLinkedin className="hover:scale-110" />
+            <BsYoutube className="hover:scale-110" />
+            <BsFacebook className="hover:scale-110" />
+            <BsInstagram className="hover:scale-110" />
+            <BsTwitter className="hover:scale-110" />
           </div>
         </div>
       </footer>
