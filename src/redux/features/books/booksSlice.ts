@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-
-interface IBook{
-  
+interface IBook {
   title: string;
   author: string;
   genre: string;
@@ -10,21 +8,20 @@ interface IBook{
   publicaitonDate: string;
   reviews: number;
 }
-const initialState:IBook = {
-  title: "",
+const initialState: IBook = {
+  title: '',
   author: '',
-  genre: "",
+  genre: '',
   publicaitonYear: 2000,
-  publicaitonDate: "",
+  publicaitonDate: '',
   reviews: 5,
 };
 const booksSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-    books: (state,action) => {
-      console.log(state,action);
-     
+    books: (state, action) => {
+      console.log(state, action);
     },
   },
 });

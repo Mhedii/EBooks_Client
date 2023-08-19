@@ -1,5 +1,6 @@
 import { useGetBooksQuery } from '@/redux/features/books/bookApi';
 import BookCard from './BookCard';
+import { Link } from 'react-router-dom';
 
 const Books = () => {
   const { data } = useGetBooksQuery({});
@@ -10,9 +11,11 @@ const Books = () => {
         Last 10 Added Books
       </h1>
       {data ? (
-        <div className="container grid grid-cols-4 gap-12">
+        <div className="container grid grid-cols-2 lg:grid-cols-4 gap-12">
           {data.data.map((book: any) => (
-            <BookCard key={book.id} book={book} />
+            <Link to={`/books/:${book._id}`}>
+              <BookCard key={book._id} book={book} />
+            </Link>
           ))}
         </div>
       ) : (
