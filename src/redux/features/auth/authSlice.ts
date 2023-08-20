@@ -32,7 +32,14 @@ const authSlice = createSlice({
     //   state.user = null;
     // },
     setUser: (state, action: PayloadAction<User | null>) => {
-      state.user = action.payload;
+      // state.user = action.payload;
+      // state.isAuthenticated = !!action.payload;
+      state.user = action.payload
+        ? {
+            email: action.payload.email,
+            displayName: action.payload.displayName,
+          }
+        : null;
       state.isAuthenticated = !!action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {

@@ -7,6 +7,7 @@ const store = configureStore({
     books: bookReducer,
     [api.reducerPath]: api.reducer,
     auth: authReducer,
+    [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

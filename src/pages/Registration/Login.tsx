@@ -1,24 +1,25 @@
 import { useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
+import useFirebase from '@/hook/useFirebase';
 
 const Login = () => {
-  // const [loginData, setLoginData] = useState({});
-  // const { signInWithGoogle, loginUser, isLoading } = useAuth();
+  const [loginData, setLoginData] = useState({});
+  const { signInWithGoogle, loginUser, isLoading } = useFirebase();
 
-  // const location = useLocation();
-  // const navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // const handleOnChange = (e) => {
-  //   const field = e.target.name;
-  //   const value = e.target.value;
-  //   const newLoginData = { ...loginData };
-  //   newLoginData[field] = value;
-  //   setLoginData(newLoginData);
-  // };
-  const handleLoginSubmit = (data) => {
-    // loginUser(loginData.email, loginData.password, location, navigate);
+  const handleOnChange = (e) => {
+    const field = e.target.name;
+    const value = e.target.value;
+    const newLoginData = { ...loginData };
+    newLoginData[field] = value;
+    setLoginData(newLoginData);
+  };
+  const handleLoginSubmit = (data: any) => {
+    loginUser(data.email, data.password, location, navigate);
 
     // e.preventDefault();
     console.log(data);
@@ -59,6 +60,7 @@ const Login = () => {
                   {...register('email')}
                   type="text"
                   placeholder="Your Email"
+                  onChange={handleOnChange}
                   className="mb-5 input input-bordered input-md w-full max-w-xs"
                 />
                 <br />
@@ -66,6 +68,7 @@ const Login = () => {
                 <input
                   {...register('password')}
                   type="text"
+                  onChange={handleOnChange}
                   placeholder="Your Password"
                   className="input input-bordered mb-5 input-md w-full max-w-xs"
                 />

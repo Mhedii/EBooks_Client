@@ -13,8 +13,8 @@ const Books = () => {
       {data ? (
         <div className="container grid grid-cols-2 lg:grid-cols-4 gap-12">
           {data.data.map((book: any) => (
-            <Link to={`/books/:${book._id}`}>
-              <BookCard key={book._id} book={book} />
+            <Link key={book._id} to={`/books/:${book._id}`}>
+              <BookCard book={book} />
             </Link>
           ))}
         </div>

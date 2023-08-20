@@ -1,6 +1,16 @@
+import useFirebase from '@/hook/useFirebase';
+import { useAppSelector } from '@/redux/hook';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
+  // const selectUser = (state) => state.auth.user;
+  // const selectUser = (state) => state.setAuth;
+  const isUser = useAppSelector((state) => state.auth.user);
+  console.log(isUser?.email, isUser?.displayName);
+  const { logOut } = useFirebase();
+  const handleLogOut = () => {
+    logOut();
+  };
   return (
     <div className="navbar container">
       <div className="navbar-start">
@@ -26,67 +36,75 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>Item 1</a>
+              <Link to="">Item 1</Link>
             </li>
             <li>
-              <a>Books</a>
+              <Link to="">Books</Link>
               <ul className="p-2">
                 <li>
-                  <a>Add Book</a>
+                  <Link to="">Add Book</Link>
                 </li>
                 <li>
-                  <a>Submenu 2</a>
+                  <Link to="">Submenu 2</Link>
                 </li>
               </ul>
             </li>
             <li>
-              <Link to="dashboard">
-                <a>DashBoard</a>
-              </Link>
+              <Link to="/dashboard">DashBoard</Link>
             </li>
           </ul>
         </div>
-        <Link to="/">
-          <a className=" text-2xl font-semibold">
-            <span className="text-red-600 ">E</span>Books
-          </a>
+
+        <Link to="/" className=" text-2xl font-semibold">
+          <span className="text-red-600 ">E</span>Books
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Books</a>
+            <Link to="/">Books</Link>
           </li>
           <li tabIndex={0}>
             <details>
               <summary>Parent</summary>
               <ul className="p-2">
                 <li>
-                  <a>Add Book</a>
+                  <Link to="/">Add Book</Link>
                 </li>
                 <li>
-                  <a>Submenu 2</a>
+                  <Link to="/">Submenu 2</Link>
                 </li>
               </ul>
             </details>
           </li>
           <li>
-            <Link to="dashboard">
-              <a>DashBoard</a>
-            </Link>
+            <Link to="/dashboard">DashBoard</Link>
           </li>
         </ul>
       </div>
       <div className="navbar-end gap-4">
-        <div className="">
-          <a className="btn">Login</a>
-        </div>
-        <div className="">
-          <a className="btn">Sign Up</a>
-        </div>
-        {/* <div className="">
-          <a className="btn">Logout</a>
-        </div> */}
+        {!isUser?.email ? (
+          <>
+            <div className="">
+              <Link to="/login" className="btn">
+                Login
+              </Link>
+            </div>
+            <div className="">
+              <Link to="/signup" className="btn">
+                Sign Up
+              </Link>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="">
+              <Link to="/" className="btn" onClick={handleLogOut}>
+                Log out
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

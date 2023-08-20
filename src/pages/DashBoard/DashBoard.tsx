@@ -1,4 +1,5 @@
 import { HiOutlineMenuAlt1 } from 'react-icons/hi';
+import { Link } from 'react-router-dom';
 const DashBoard = () => {
   return (
     <div>
@@ -20,10 +21,10 @@ const DashBoard = () => {
           <ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
             {/* Sidebar content here */}
             <li>
-              <a>Sidebar Item 1</a>
+              <Link to="/">Sidebar Item 1</Link>
             </li>
             <li>
-              <a>Sidebar Item 2</a>
+              <Link to="/">Sidebar Item 2</Link>
             </li>
           </ul>
         </div>

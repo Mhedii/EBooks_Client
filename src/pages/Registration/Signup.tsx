@@ -1,111 +1,122 @@
+import useFirebase from '@/hook/useFirebase';
 import { useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-  // const [loginData, setLoginData] = useState({});
-  // const navigate = useNavigate();
-  // const location = useLocation();
+  const [signUpData, setSignUpData] = useState({});
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // const { user, registerUser, isLoading, authError, signInWithGoogle } =
   //   useAuth();
+  const { registerUser, signInWithGoogle } = useFirebase();
 
-  // const handleOnBlur = (e) => {
-  //   const field = e.target.name;
-  //   const value = e.target.value;
-  //   const newLoginData = { ...loginData };
-  //   newLoginData[field] = value;
-  //   setLoginData(newLoginData);
-  // };
-  // const handleLoginSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (loginData.password !== loginData.password2) {
-  //     return;
-  //   }
+  const handleOnBlur = (e) => {
+    const field = e.target.name;
+    const value = e.target.value;
+    const newSignUpData = { ...signUpData, signUpData };
+    newSignUpData[field] = value;
+    setSignUpData(newSignUpData);
+  };
 
-  //   registerUser(loginData.email, loginData.password, loginData.name, navigate);
-  // };
-  // const handleGoogleSignIn = () => {
-  //   signInWithGoogle(location, navigate);
-  // };
+  const handleSignUp = (data) => {
+    // event.preventDefault();
+
+    if (data.password !== data.confirmPassword) {
+      return;
+    }
+    try {
+      registerUser(data.email, data.password, data.name, navigate);
+    } catch (error) {
+      console.log('hoini');
+    }
+  };
+  const handleGoogleSignIn = () => {
+    signInWithGoogle(location, navigate);
+  };
+  const { register, handleSubmit } = useForm();
   return (
     <>
-      <div>
-        <h1>this is sign up</h1>
-      </div>
-      {/* <Header />
-      <Container className="text-center register">
-        {/* <Grid container spacing={2}> */}
-      <Grid item sx={{ mt: 8 }} xs={12} md={12}>
-        <h1 className="login-heading">Sign Up</h1>
-        <button className="google-login" onClick={handleGoogleSignIn}>
-          <span className="google-logo">
-            <img src="https://i.ibb.co/GJ6gbG1/google-logo-9808.png" alt="" />
-          </span>{' '}
-          Google Sign In
-        </button>
-        <p className="or-sign">------------or Sign Up with Email------------</p>
-        {!isLoading && (
-          <form onSubmit={handleLoginSubmit}>
-            <TextField
-              className="your-email"
-              sx={{ width: '40%', m: 1 }}
-              id="standard-basic"
-              label="Your Name"
-              name="name"
-              onBlur={handleOnBlur}
-              required
-            />{' '}
-            <br />
-            <TextField
-              sx={{ width: '40%', m: 1 }}
-              id="standard-basic"
-              label="Your Email"
-              name="email"
-              type="email"
-              onBlur={handleOnBlur}
-              required
-            />
-            <br />
-            <TextField
-              sx={{ width: '40%', m: 1 }}
-              id="standard-basic"
-              label="Your Password"
-              type="password"
-              name="password"
-              onBlur={handleOnBlur}
-              required
-            />{' '}
-            <br />
-            <TextField
-              sx={{ width: '40%', m: 1 }}
-              id="standard-basic"
-              label="ReType Your Password"
-              type="password"
-              name="password2"
-              onBlur={handleOnBlur}
-              required
-            />
-            <br />
-            <button type="submit" className="sign-up-btn">
-              Sign Up
-            </button>{' '}
-            <br />
-            <p className="Already-account">
-              Already have an Account?{' '}
-              <NavLink to="/login" className="new-sign-in">
-                Sign in{' '}
-              </NavLink>
+      <div className="container text-center  min-h-screen  ">
+        <div className="items-center">
+          <div className="grid grid-cols-3 lg:text-lg sm:text-xs">
+            <button
+              className=" lg:mx-14 col-start-2 flex items-center justify-center py-2 btn-primary rounded-xl "
+              onClick={handleGoogleSignIn}
+            >
+              <img
+                className="w-10 "
+                src="https://i.ibb.co/GJ6gbG1/google-logo-9808.png"
+                alt=""
+              />
+              Google Sign In
+            </button>
+
+            <p className="col-start-2 my-4">
+              ----------- or Sign up with Email -----------
             </p>
-          </form>
-        )}
-        {isLoading && <CircularProgress />}
+            <form
+              className="col-start-2 "
+              onSubmit={handleSubmit(handleSignUp)}
+            >
+              <input
+                {...register('name')}
+                type="text"
+                placeholder="Your Name"
+                className="mb-5 input input-bordered input-md w-full max-w-xs"
+              />
+              <br />
+              <input
+                {...register('email')}
+                type="text"
+                placeholder="Your Email"
+                className="mb-5 input input-bordered input-md w-full max-w-xs"
+              />
+              <br />
+
+              <input
+                {...register('password')}
+                type="text"
+                placeholder="Your Password"
+                className="input input-bordered mb-5 input-md w-full max-w-xs"
+                onBlur={handleOnBlur}
+              />
+              <br />
+              <input
+                {...register('confirmPassword')}
+                type="text"
+                placeholder="Confirm Password"
+                className="input input-bordered mb-5 input-md w-full max-w-xs"
+                onBlur={handleOnBlur}
+              />
+              <br />
+              <button
+                type="submit"
+                className="font-bold text-lg mb-5 btn-primary w-full max-w-xs h-10 rounded-xl "
+              >
+                Sign up
+              </button>
+              <p className="">
+                Have Account?{' '}
+                <Link
+                  to="/signup"
+                  className="text-blue-700 hover:cursor-pointer"
+                >
+                  Login
+                </Link>
+              </p>
+            </form>
+
+            {/* {isLoading && <CircularProgress />}
         {user?.email && (
           <Alert severity="success">User Created successfully!</Alert>
         )}
-        {authError && <Alert severity="error">{authError}</Alert>}
-      </Grid>
-      {/* </Container>
-      <Footer /> */}
+        {authError && <Alert severity="error">{authError}</Alert>} */}
+            {/* {user?.email ? console.log('object') : console.log('2')} */}
+          </div>
+        </div>
+      </div>
     </>
   );
 };
