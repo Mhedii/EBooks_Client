@@ -1,16 +1,15 @@
 import useFirebase from '@/hook/useFirebase';
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
   const [signUpData, setSignUpData] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
-
-  // const { user, registerUser, isLoading, authError, signInWithGoogle } =
-  //   useAuth();
-  const { registerUser, signInWithGoogle } = useFirebase();
+  const { registerUser, loginUser, signInWithGoogle } = useFirebase();
 
   const handleOnBlur = (e) => {
     const field = e.target.name;
@@ -20,22 +19,73 @@ const Signup = () => {
     setSignUpData(newSignUpData);
   };
 
-  const handleSignUp = (data) => {
-    // event.preventDefault();
+  const handleSignUp = async (data) => {
+    if (
+      data.name == '' ||
+      data.email == '' ||
+      data.password == '' ||
+      data.confirmPassword == ''
+    ) {
+      const emptyFields = [];
 
-    if (data.password !== data.confirmPassword) {
+      if (data.name === '') {
+        emptyFields.push('Name');
+      }
+      if (data.email === '') {
+        emptyFields.push('Email');
+      }
+      if (data.password === '') {
+        emptyFields.push('Password');
+      }
+      if (data.confirmPassword === '') {
+        emptyFields.push('Confirm Password');
+      }
+      toast(`${emptyFields.join(', ')} is Required`);
+    }
+    if (data.password !== data.confirmPassword && data.password != '') {
+      toast('Passwords does not match');
       return;
     }
+    // if (data.password == null && data.confirmPassword == null) {
+    //   return;
+    // }
+
+    // if (
+    //   (data.email != null,
+    //   data.password != null,
+    //   data.name != null &&
+    //     data.password === data.confirmPassword &&
+    //     data.password != '')
+    // ) {
     try {
-      registerUser(data.email, data.password, data.name, navigate);
+      await registerUser(data.email, data.password, data.name, navigate);
+      {
+        toast('Signup Succesfully');
+        setSignUpData({});
+        loginUser(data.email, data.password, location, navigate);
+        reset();
+      }
     } catch (error) {
-      console.log('hoini');
+      // if (error.code === 'auth/email-already-in-use') {
+      //   toast('Email address is already in use.');
+      // } else if (error.code === 'auth/weak-password') {
+      //   toast('Password is too weak.');
+      // } else {
+      //   toast('An error occurred during sign-up.');
+      // }
+      console.error('Firebase Authentication Error:', error);
     }
+    // }
   };
   const handleGoogleSignIn = () => {
     signInWithGoogle(location, navigate);
   };
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
   return (
     <>
       <div className="container text-center  min-h-screen  ">
@@ -61,14 +111,15 @@ const Signup = () => {
               onSubmit={handleSubmit(handleSignUp)}
             >
               <input
-                {...register('name')}
+                {...register('name', { required: true })}
                 type="text"
                 placeholder="Your Name"
                 className="mb-5 input input-bordered input-md w-full max-w-xs"
               />
+
               <br />
               <input
-                {...register('email')}
+                {...register('email', { required: true })}
                 type="text"
                 placeholder="Your Email"
                 className="mb-5 input input-bordered input-md w-full max-w-xs"
@@ -76,15 +127,17 @@ const Signup = () => {
               <br />
 
               <input
-                {...register('password')}
+                {...register('password', { required: true })}
                 type="text"
                 placeholder="Your Password"
                 className="input input-bordered mb-5 input-md w-full max-w-xs"
                 onBlur={handleOnBlur}
               />
+              {errors.password && <p>{errors.password.message}</p>}
+
               <br />
               <input
-                {...register('confirmPassword')}
+                {...register('confirmPassword', { required: true })}
                 type="text"
                 placeholder="Confirm Password"
                 className="input input-bordered mb-5 input-md w-full max-w-xs"

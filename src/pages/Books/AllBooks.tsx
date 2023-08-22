@@ -1,9 +1,9 @@
 import { useGetBooksQuery } from '@/redux/features/books/bookApi';
-import BookCard from './BookCard';
 import { Link } from 'react-router-dom';
 import { BsFilterLeft, BsFilterRight } from 'react-icons/bs';
 import { useState } from 'react';
-const Books = () => {
+import BookCard from '../Home/BookCard';
+const AllBooks = () => {
   const { data } = useGetBooksQuery({});
   const [isFilter, setIsFilter] = useState(false);
   return (
@@ -29,19 +29,14 @@ const Books = () => {
           )}
         </div>
       </div>
-      <h1 className="text-3xl text-center font-semibold mt-6 mb-16 ">
-        Last 10 Added Books
-      </h1>
+
       {data ? (
-        <div className="container grid grid-cols-3  lg:grid-cols-5 gap-12">
-          {data.data
-            .slice(-10)
-            .reverse()
-            .map((book: any) => (
-              <Link key={book._id} to={`/books/${book._id}`}>
-                <BookCard book={book} />
-              </Link>
-            ))}
+        <div className="container grid grid-cols-2 lg:grid-cols-5 gap-12">
+          {data.data.map((book: any) => (
+            <Link key={book._id} to={`/books/:${book._id}`}>
+              <BookCard book={book} />
+            </Link>
+          ))}
         </div>
       ) : (
         <div>Loading....</div>
@@ -50,4 +45,4 @@ const Books = () => {
   );
 };
 
-export default Books;
+export default AllBooks;

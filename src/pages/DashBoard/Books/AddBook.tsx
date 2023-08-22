@@ -5,6 +5,7 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
 import { useAddBookMutation } from '@/redux/features/books/bookApi';
+import { toast } from 'react-toastify';
 const AddBook = () => {
   const [selected, setSelected] = React.useState<Date>();
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +19,8 @@ const AddBook = () => {
     // reviews: number;
   };
   interface IaddBookData {
-    file: ImageData;
+    // image: string;
+    // image: File;
     title: string;
     author: string;
     anotherAuthor?: string;
@@ -27,18 +29,16 @@ const AddBook = () => {
     publicaitonDate: string;
     // reviews: number;
   }
-  const { register, handleSubmit, setValue } = useForm<IaddBookData>();
+  const { register, handleSubmit, reset } = useForm<IaddBookData>();
   const handleisOpen = () => {
     setIsOpen(!isOpen);
   };
 
-  const [AddBook, { isError, isLoading, isSuccess }] = useAddBookMutation();
-  // console.log(isError);
-  // console.log(isLoading);
-  // console.log(isSuccess);
+  const [AddBook] = useAddBookMutation();
+
   const onSubmit: SubmitHandler<IaddBookData> = (data) => {
     const options = {
-      file: data.file,
+      // image: data.image,
       title: data.title,
       author: data.author,
       anotherAuthor: data.anotherAuthor,
@@ -48,8 +48,9 @@ const AddBook = () => {
       // reviews: 4,
     };
     AddBook(options);
-    console.log(options);
-    // setInputValue('');
+    toast('Book Added Successfully');
+    setIsOpen(!isOpen);
+    reset();
   };
 
   return (
@@ -60,22 +61,22 @@ const AddBook = () => {
           className="col-start-2 grid grid-cols-1  mb-20"
         >
           <div>
-            <label className=" cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-xl shadow-md transition duration-300 ">
+            {/* <label className=" cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-xl shadow-md transition duration-300 ">
               Add Cover
               <input
-                {...register('file')}
+                {...register('image')}
                 id="fileInput"
                 accept="image/*"
-                type="file"
+                type="image"
                 className="  inset-0  w-0 opacity-0 cursor-pointer"
               />
-            </label>
+            </label> */}
           </div>
           <div className="relative rounded-md overflow-hidden"></div>
           <br />
           <label>Book Title</label>
           <input
-            {...register('title')}
+            {...register('title', { required: true })}
             type="text"
             placeholder="Type Here"
             className="input input-bordered input-md w-full "
@@ -83,7 +84,7 @@ const AddBook = () => {
           <br />
           <label>Author</label>
           <input
-            {...register('author')}
+            {...register('author', { required: true })}
             type="text"
             placeholder="Type Here"
             className="input input-bordered input-md w-full "
@@ -99,7 +100,7 @@ const AddBook = () => {
           <br />
           <label>Genre</label>
           <input
-            {...register('genre')}
+            {...register('genre', { required: true })}
             type="text"
             placeholder="Type Here"
             className="input input-bordered input-md w-full "
@@ -109,7 +110,7 @@ const AddBook = () => {
             <label className="mr-3">Publication Date:</label>
             {isOpen ? (
               <DayPicker
-                {...register('publicaitonDate')}
+                {...register('publicaitonDate', { required: true })}
                 mode="single"
                 selected={selected}
                 onSelect={setSelected}

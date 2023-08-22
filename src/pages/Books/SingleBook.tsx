@@ -1,6 +1,9 @@
 import { useSingleBookQuery } from '@/redux/features/books/bookApi';
+import { useParams } from 'react-router-dom';
 
 const SingleBook = () => {
+  const { id } = useParams();
+
   const { data } = useSingleBookQuery(id);
 
   if (!data) {

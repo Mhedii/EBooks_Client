@@ -3,10 +3,7 @@ import { useAppSelector } from '@/redux/hook';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  // const selectUser = (state) => state.auth.user;
-  // const selectUser = (state) => state.setAuth;
   const isUser = useAppSelector((state) => state.auth.user);
-  console.log(isUser?.email, isUser?.displayName);
   const { logOut } = useFirebase();
   const handleLogOut = () => {
     logOut();
@@ -36,10 +33,13 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <Link to="">Item 1</Link>
+              <Link to="/allbooks">All Books</Link>
             </li>
             <li>
-              <Link to="">Books</Link>
+              <Link to="/addbook">Add Book</Link>
+            </li>
+            {/* <li>
+              <Link to="/dashboard">Dashboard</Link>
               <ul className="p-2">
                 <li>
                   <Link to="">Add Book</Link>
@@ -48,10 +48,7 @@ const Navbar = () => {
                   <Link to="">Submenu 2</Link>
                 </li>
               </ul>
-            </li>
-            <li>
-              <Link to="/dashboard">DashBoard</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
 
@@ -62,24 +59,21 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to="/">Books</Link>
+            <Link to="/allbooks">All Books</Link>
           </li>
-          <li tabIndex={0}>
+          <li>
+            <Link to="/addbook">Add Book</Link>
+          </li>
+          {/* <li tabIndex={0}>
             <details>
-              <summary>Parent</summary>
+              <summary>Dashboard</summary>
               <ul className="p-2">
                 <li>
-                  <Link to="/">Add Book</Link>
-                </li>
-                <li>
-                  <Link to="/">Submenu 2</Link>
+                  <Link to="/dashboard">Add Book</Link>
                 </li>
               </ul>
             </details>
-          </li>
-          <li>
-            <Link to="/dashboard">DashBoard</Link>
-          </li>
+          </li> */}
         </ul>
       </div>
       <div className="navbar-end gap-4">

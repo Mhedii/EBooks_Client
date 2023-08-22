@@ -1,7 +1,6 @@
 import App from '@/App';
 import SingleBook from '@/pages/Books/SingleBook';
 import AddBook from '@/pages/DashBoard/Books/AddBook';
-import DashBoard from '@/pages/DashBoard/DashBoard';
 import Books from '@/pages/Home/Books';
 import Home from '@/pages/Home/Home';
 import Login from '@/pages/Registration/Login';
@@ -16,6 +15,10 @@ const routes = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: '/books',
+        element: <Books />,
       },
       {
         path: '/allbooks',
@@ -34,12 +37,12 @@ const routes = createBrowserRouter([
         path: '/signup',
         element: <Signup />,
       },
+      // {
+      //   path: '/dashboard',
+      //   element: <DashBoard />,
+      // },
       {
-        path: '/dashboard',
-        element: <DashBoard />,
-      },
-      {
-        path: 'dashboard/add-book',
+        path: '/addbook',
         element: <AddBook />,
       },
     ],
