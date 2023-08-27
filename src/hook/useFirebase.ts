@@ -24,7 +24,8 @@ const useFirebase = () => {
   const googleProvider = new GoogleAuthProvider();
   const auth = getAuth();
 
-  const { setUser, setLoading, setAuthError, setAdmin } = useAuthActions();
+  const { setUser, setLoading, setAuthError, setAdmin, login, logout } =
+    useAuthActions();
 
   useEffect(() => {
     setLoading(true);
@@ -80,6 +81,7 @@ const useFirebase = () => {
             // error;
             console.error('Error updating user profile:', updateProfileError);
           });
+        login(true);
         navigate('/');
       })
       .catch((error) => {
@@ -93,6 +95,7 @@ const useFirebase = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const destination = location?.state?.from || '/';
+        login(true);
         navigate(destination);
         setAuthError('');
       })
@@ -109,6 +112,7 @@ const useFirebase = () => {
           email: user?.email,
           displayName: user?.displayName,
         });
+        login(true);
       } else {
         setUser({});
       }
@@ -118,6 +122,7 @@ const useFirebase = () => {
 
   const logOut = () => {
     setIsLoading(true);
+    logout();
     signOut(auth)
       .then(() => {})
       .finally(() => setIsLoading(false));

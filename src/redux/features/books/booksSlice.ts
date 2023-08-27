@@ -7,6 +7,11 @@ interface IBook {
   publicaitonYear: number;
   publicaitonDate: string;
   reviews: number;
+  isMarked: boolean;
+  searchTerm: string;
+  wishlist: object;
+  readingList: object;
+  finishedList: object;
 }
 const initialState: IBook = {
   title: '',
@@ -15,6 +20,11 @@ const initialState: IBook = {
   publicaitonYear: 2000,
   publicaitonDate: '',
   reviews: 5,
+  isMarked: false,
+  searchTerm: '',
+  wishlist: [],
+  readingList: [],
+  finishedList: [],
 };
 const booksSlice = createSlice({
   name: 'books',
@@ -23,8 +33,18 @@ const booksSlice = createSlice({
     books: (state, action) => {
       console.log(state, action);
     },
+    moveBookToReading(state, action) {
+      state.readingList = action.payload;
+    },
+    moveBookToFinished(state, action) {
+      console.log(state, action);
+    },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    },
   },
 });
 
-export const { books } = booksSlice.actions;
+export const { books, moveBookToReading, moveBookToFinished } =
+  booksSlice.actions;
 export default booksSlice.reducer;

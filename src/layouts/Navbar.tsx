@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const isUser = useAppSelector((state) => state.auth.user);
+  const isAuthenticate = useAppSelector((state) => state.auth.isAuthenticated);
   const { logOut } = useFirebase();
   const handleLogOut = () => {
     logOut();
@@ -77,7 +78,8 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end gap-4">
-        {!isUser?.email ? (
+        {/* {!isUser?.email ? ( */}
+        {!isAuthenticate ? (
           <>
             <div className="">
               <Link to="/login" className="btn">

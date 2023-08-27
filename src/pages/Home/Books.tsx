@@ -9,8 +9,8 @@ const Books = () => {
   return (
     <div className="">
       <div className=" grid grid-cols-3">
-        <div className="col-start-2 flex ">
-          <input
+        {/* <div className="col-start-2 flex "> */}
+        {/* <input
             type="text"
             placeholder="Search here...."
             className="input input-bordered  input-md w-full  "
@@ -26,8 +26,8 @@ const Books = () => {
               className="text-3xl my-2 ml-2   hover:cursor-pointer"
               onClick={() => setIsFilter(true)}
             />
-          )}
-        </div>
+          )} */}
+        {/* </div> */}
       </div>
       <h1 className="text-3xl text-center font-semibold mt-6 mb-16 ">
         Last 10 Added Books
@@ -38,9 +38,9 @@ const Books = () => {
             .slice(-10)
             .reverse()
             .map((book: any) => (
-              <Link key={book._id} to={`/books/${book._id}`}>
-                <BookCard book={book} />
-              </Link>
+              // <Link  }>
+              <BookCard key={book._id} book={book} />
+              // </Link>
             ))}
         </div>
       ) : (

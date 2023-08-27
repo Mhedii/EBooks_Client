@@ -1,11 +1,47 @@
-import { useGetBooksQuery } from '@/redux/features/books/bookApi';
-import { Link } from 'react-router-dom';
+import {
+  // useGetBooksQuery,
+  useGetFilteredBooksQuery,
+} from '@/redux/features/books/bookApi';
 import { BsFilterLeft, BsFilterRight } from 'react-icons/bs';
 import { useState } from 'react';
 import BookCard from '../Home/BookCard';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
 const AllBooks = () => {
-  const { data } = useGetBooksQuery({});
+  const [searchTerm, setSearchTerm] = useState('');
+  // const { data } = useGetBooksQuery({ search: searchTerm });
+  // const searchTerms = 'Genre';
+  const { data, isLoading } = useGetFilteredBooksQuery(searchTerm);
+
+  // const { data } = useGetFilteredBooksQuery({
+  //   title: searchTerm,
+  //   author: '',
+  //   genre: '',
+  // });
+  // const { data2 } = useGetFilteredBooksQuery({
+  //   title: '',
+  //   author: searchTerm,
+  //   genre: '',
+  // });
+  // const { data3 } = useGetFilteredBooksQuery({
+  //   title: '',
+  //   author: '',
+  //   genre: searchTerm,
+  // });
+
   const [isFilter, setIsFilter] = useState(false);
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // console.log(searchTerm);
+  // const searchTerm = 'Genre'; // Your search term
+  // fetch(`http://localhost:5000/api/v1/books/allbooks/?genre=${searchTerm}`)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //   })
+  //   .catch((error) => console.error(error));
+
   return (
     <div className="">
       <div className=" grid grid-cols-3">
@@ -14,6 +50,8 @@ const AllBooks = () => {
             type="text"
             placeholder="Search here...."
             className="input input-bordered  input-md w-full  "
+            value={searchTerm}
+            onChange={handleSearch}
           />
 
           {isFilter ? (
@@ -31,11 +69,9 @@ const AllBooks = () => {
       </div>
 
       {data ? (
-        <div className="container grid grid-cols-2 lg:grid-cols-5 gap-12">
+        <div className="container mt-10 grid grid-cols-2 lg:grid-cols-5 gap-12">
           {data.data.map((book: any) => (
-            <Link key={book._id} to={`/books/:${book._id}`}>
-              <BookCard book={book} />
-            </Link>
+            <BookCard book={book} key={book._id} />
           ))}
         </div>
       ) : (

@@ -1,51 +1,62 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
-import { useAddBookMutation } from '@/redux/features/books/bookApi';
+import {
+  useAddBookMutation,
+  useSingleBookQuery,
+  useUpdateBookMutation,
+} from '@/redux/features/books/bookApi';
 import { toast } from 'react-toastify';
-const AddBook = () => {
-  const [selected, setSelected] = React.useState<Date>();
-  const [isOpen, setIsOpen] = useState(false);
-
+import { useNavigate, useParams } from 'react-router-dom';
+const EditBook = () => {
+  const { id } = useParams();
+  const { data } = useSingleBookQuery(id);
   interface IaddBookData {
-    // image: string;
-    // image: File;
     title: string;
     author: string;
     anotherAuthor?: string;
     genre: string;
     publicaitonYear: number;
     publicaitonDate: string;
-    reviews?: number;
   }
+  const {
+    title,
+    author,
+    publicaitonDate,
+
+    anotherAuthor,
+    genre,
+  } = data.data;
+
+  const [selected, setSelected] = useState(new Date(publicaitonDate));
+  const [isOpen, setIsOpen] = useState(false);
+
   const { register, handleSubmit, reset } = useForm<IaddBookData>();
   const handleisOpen = () => {
     setIsOpen(!isOpen);
   };
 
-  const [AddBook] = useAddBookMutation();
-
-  const onSubmit = (data) => {
+  const [updateBook] = useUpdateBookMutation();
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<IaddBookData> = (data) => {
     const options = {
       // image: data.image,
-      title: data.title,
-      author: data.author,
-      anotherAuthor: data.anotherAuthor,
-      genre: data.genre,
+      title: data?.title,
+      author: data?.author,
+      anotherAuthor: data?.anotherAuthor,
+      genre: data?.genre,
       publicaitonYear: format(selected, 'Y'),
       publicaitonDate: format(selected, 'P'),
-      reviews: 4,
+      // reviews: 4,
     };
-    console.log(options);
-    AddBook(options);
-    toast('Book Added Successfully');
-    setIsOpen(!isOpen);
+    updateBook(options);
+    toast('Book Update Successfully');
     reset();
+    navigate('/');
   };
-
   return (
     <div>
       <div className="container grid grid-cols-3 items-center ">
@@ -53,33 +64,22 @@ const AddBook = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="col-start-2 grid grid-cols-1  mb-20"
         >
-          <div>
-            {/* <label className=" cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-xl shadow-md transition duration-300 ">
-              Add Cover
-              <input
-                {...register('image')}
-                id="fileInput"
-                accept="image/*"
-                type="image"
-                className="  inset-0  w-0 opacity-0 cursor-pointer"
-              />
-            </label> */}
-          </div>
+          <div></div>
           <div className="relative rounded-md overflow-hidden"></div>
           <br />
           <label>Book Title</label>
           <input
-            {...register('title', { required: true })}
+            {...register('title')}
             type="text"
-            placeholder="Type Here"
+            defaultValue={title}
             className="input input-bordered input-md w-full "
           />
           <br />
           <label>Author</label>
           <input
-            {...register('author', { required: true })}
+            {...register('author')}
             type="text"
-            placeholder="Type Here"
+            defaultValue={author}
             className="input input-bordered input-md w-full "
           />
           <br />
@@ -87,15 +87,15 @@ const AddBook = () => {
           <input
             {...register('anotherAuthor')}
             type="text"
-            placeholder="Type Here"
+            defaultValue={anotherAuthor}
             className="input input-bordered input-md w-full "
           />
           <br />
           <label>Genre</label>
           <input
-            {...register('genre', { required: true })}
+            {...register('genre')}
             type="text"
-            placeholder="Type Here"
+            defaultValue={genre}
             className="input input-bordered input-md w-full "
           />
           <br />
@@ -128,4 +128,4 @@ const AddBook = () => {
   );
 };
 
-export default AddBook;
+export default EditBook;

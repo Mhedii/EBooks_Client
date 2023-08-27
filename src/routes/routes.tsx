@@ -1,11 +1,16 @@
 import App from '@/App';
+import PrivateRoute from '@/context/PrivateRoute';
+import AllBooks from '@/pages/Books/AllBooks';
+import EditBook from '@/pages/Books/EditPage';
 import SingleBook from '@/pages/Books/SingleBook';
 import AddBook from '@/pages/DashBoard/Books/AddBook';
 import Books from '@/pages/Home/Books';
 import Home from '@/pages/Home/Home';
 import Login from '@/pages/Registration/Login';
 import Signup from '@/pages/Registration/Signup';
-import { createBrowserRouter } from 'react-router-dom';
+import { useGetuserQuery } from '@/redux/features/auth/authApi';
+import { useAppSelector } from '@/redux/hook';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 const routes = createBrowserRouter([
   {
@@ -22,7 +27,7 @@ const routes = createBrowserRouter([
       },
       {
         path: '/allbooks',
-        element: <Books />,
+        element: <AllBooks />,
       },
       {
         path: '/books/:id',
@@ -43,7 +48,12 @@ const routes = createBrowserRouter([
       // },
       {
         path: '/addbook',
-        element: <AddBook />,
+        // element: <AddBook />,
+        element: <PrivateRoute path="/addbook" element={<AddBook />} />,
+      },
+      {
+        path: '/editbook/:id',
+        element: <EditBook />,
       },
     ],
   },

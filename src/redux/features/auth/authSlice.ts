@@ -31,6 +31,7 @@ const authSlice = createSlice({
     // clearAuthData: (state) => {
     //   state.user = null;
     // },
+
     setUser: (state, action: PayloadAction<User | null>) => {
       // state.user = action.payload;
       // state.isAuthenticated = !!action.payload;
@@ -40,7 +41,6 @@ const authSlice = createSlice({
             displayName: action.payload.displayName,
           }
         : null;
-      state.isAuthenticated = !!action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
