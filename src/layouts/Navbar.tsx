@@ -36,20 +36,13 @@ const Navbar = () => {
             <li>
               <Link to="/allbooks">All Books</Link>
             </li>
-            <li>
-              <Link to="/addbook">Add Book</Link>
-            </li>
-            {/* <li>
-              <Link to="/dashboard">Dashboard</Link>
-              <ul className="p-2">
-                <li>
-                  <Link to="">Add Book</Link>
-                </li>
-                <li>
-                  <Link to="">Submenu 2</Link>
-                </li>
-              </ul>
-            </li> */}
+            {isAuthenticate ? (
+              <li>
+                <Link to="/addbook">Add Book</Link>
+              </li>
+            ) : (
+              ''
+            )}
           </ul>
         </div>
 
@@ -62,19 +55,13 @@ const Navbar = () => {
           <li>
             <Link to="/allbooks">All Books</Link>
           </li>
-          <li>
-            <Link to="/addbook">Add Book</Link>
-          </li>
-          {/* <li tabIndex={0}>
-            <details>
-              <summary>Dashboard</summary>
-              <ul className="p-2">
-                <li>
-                  <Link to="/dashboard">Add Book</Link>
-                </li>
-              </ul>
-            </details>
-          </li> */}
+          {isAuthenticate ? (
+            <li>
+              <Link to="/addbook">Add Book</Link>
+            </li>
+          ) : (
+            ''
+          )}
         </ul>
       </div>
       <div className="navbar-end gap-4">

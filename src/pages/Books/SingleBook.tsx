@@ -2,16 +2,17 @@ import {
   useDeleteBookMutation,
   useSingleBookQuery,
 } from '@/redux/features/books/bookApi';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import DeleteBookModal from './DeleteBookModal';
 import { useState } from 'react';
+import { useAppSelector } from '@/redux/hook';
 
 const SingleBook = () => {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const { data } = useSingleBookQuery(id);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   if (!data) {
     return;
   }
@@ -56,39 +57,33 @@ const SingleBook = () => {
               </h2>
               <h2>Reviews : {reviews}</h2>
               <div className="">
-                <Link to={`/editbook/${id}`}>
-                  <button className="btn-primary rounded px-4 py-1 mr-5">
-                    Edit
-                  </button>
-                </Link>
-                {/* <button
-                  className="btn-error rounded px-4 py-1"
-                  // onClick={handleDeleteClick}
-                  onClick={handleModalOpen}
-                >
-                  Delete
-                </button>
-                <DeleteBookModal
-                  isOpen={isModalOpen}
-                  onClose={handleModalClose}
-                  id={id}
-                /> */}
-                <div>
-                  <button
-                    className="btn-error rounded px-4 py-1"
-                    onClick={handleModalOpen}
-                    // onClick={() => window.id.showModal()}
-                  >
-                    Delete
-                  </button>
-                  {isModalOpen && (
-                    <DeleteBookModal
-                      isOpen={isModalOpen}
-                      onClose={handleModalClose}
-                      id={id}
-                    />
-                  )}
-                </div>
+                {isAuthenticated ? (
+                  <>
+                    <div className="flex">
+                      <button
+                        className="btn-primary rounded px-4 py-1 mr-5"
+                        onClick={() => navigate(`/editbook/${id}`)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn-error rounded px-4 py-1"
+                        onClick={handleModalOpen}
+                      >
+                        Delete
+                      </button>
+                      {isModalOpen && (
+                        <DeleteBookModal
+                          isOpen={isModalOpen}
+                          onClose={handleModalClose}
+                          id={id}
+                        />
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>
