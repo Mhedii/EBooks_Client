@@ -130,7 +130,7 @@ const useFirebase = () => {
 
   const saveUser = (email, displayName, password, method) => {
     const user = { email, displayName, password };
-    fetch('http://localhost:5000/api/v1/auth/signup', {
+    fetch('https://eb-ooks-backend.vercel.app/api/v1/auth/signup', {
       method: method,
       headers: {
         'content-type': 'application/json',
@@ -138,11 +138,7 @@ const useFirebase = () => {
       body: JSON.stringify(user),
     }).then();
   };
-  // useEffect(() => {
-  //   fetch(`http://localhost:5000/users/${user.email}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setAdmin(data.admin));
-  // }, [user.email]);
+
   return {
     signInWithGoogle,
     logOut,

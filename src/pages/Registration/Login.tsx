@@ -6,7 +6,7 @@ import useFirebase from '@/hook/useFirebase';
 
 const Login = () => {
   const [loginData, setLoginData] = useState({});
-  const { signInWithGoogle, loginUser, isLoading } = useFirebase();
+  const { signInWithGoogle, loginUser } = useFirebase();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -20,9 +20,6 @@ const Login = () => {
   };
   const handleLoginSubmit = (data: any) => {
     loginUser(data.email, data.password, location, navigate);
-
-    // e.preventDefault();
-    console.log(data);
   };
 
   const handleGoogleSignIn = () => {
