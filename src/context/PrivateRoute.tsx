@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppSelector } from '@/redux/hook';
 
 import { Navigate } from 'react-router-dom';

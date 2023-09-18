@@ -1,9 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
-  useGetBooksQuery,
-  useUpdateBookStatusMutation,
-} from '@/redux/features/books/bookApi';
-import {
-  moveBookToFinished,
+  // moveBookToFinished,
   moveBookToReading,
 } from '@/redux/features/books/booksSlice';
 import { useAppDispatch } from '@/redux/hook';
@@ -13,13 +12,13 @@ import { Link } from 'react-router-dom';
 const BookCard = (book: any) => {
   const { title, author, genre, publicaitonDate, _id } = book.book;
   const [isMark, setIsMark] = useState(false);
-  const { data } = useGetBooksQuery({});
+  // const { data } = useGetBooksQuery({});
   const dispatch = useAppDispatch();
-  const handleCancel = (_id) => {
+  const handleCancel = (_id: any) => {
     // dispatch(moveBookToReading(_id));
     setIsMark(false);
   };
-  const handleActive = (_id) => {
+  const handleActive = (_id: any) => {
     // dispatch(moveBookToFinished(_id));
     dispatch(moveBookToReading(book.book));
     setIsMark(true);

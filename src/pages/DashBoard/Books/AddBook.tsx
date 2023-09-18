@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
@@ -11,7 +13,6 @@ const AddBook = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   interface IaddBookData {
-    // image: string;
     // image: File;
     title: string;
     author: string;
@@ -28,15 +29,15 @@ const AddBook = () => {
 
   const [AddBook] = useAddBookMutation();
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     const options = {
       // image: data.image,
       title: data.title,
       author: data.author,
       anotherAuthor: data.anotherAuthor,
       genre: data.genre,
-      publicaitonYear: format(selected, 'Y'),
-      publicaitonDate: format(selected, 'P'),
+      publicaitonYear: format(selected!, 'Y'),
+      publicaitonDate: format(selected!, 'P'),
       reviews: 4,
     };
     console.log(options);

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// import useFirebase from '@/hook/useFirebase';
 import useFirebase from '@/hook/useFirebase';
 
 import React, { ReactNode } from 'react';

@@ -8,9 +8,9 @@ import Books from '@/pages/Home/Books';
 import Home from '@/pages/Home/Home';
 import Login from '@/pages/Registration/Login';
 import Signup from '@/pages/Registration/Signup';
-import { useGetuserQuery } from '@/redux/features/auth/authApi';
-import { useAppSelector } from '@/redux/hook';
-import { Navigate, createBrowserRouter } from 'react-router-dom';
+// import { useGetuserQuery } from '@/redux/features/auth/authApi';
+// import { useAppSelector } from '@/redux/hook';
+import { createBrowserRouter } from 'react-router-dom';
 
 const routes = createBrowserRouter([
   {

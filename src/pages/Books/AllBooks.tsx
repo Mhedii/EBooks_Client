@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   // useGetBooksQuery,
   useGetFilteredBooksQuery,
@@ -5,43 +6,22 @@ import {
 import { BsFilterLeft, BsFilterRight } from 'react-icons/bs';
 import { useState } from 'react';
 import BookCard from '../Home/BookCard';
-import { useAppDispatch, useAppSelector } from '@/redux/hook';
+
 const AllBooks = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  // const { data } = useGetBooksQuery({ search: searchTerm });
-  // const searchTerms = 'Genre';
-  const { data, isLoading } = useGetFilteredBooksQuery(searchTerm);
+  const [filters, setFilters] = useState('');
 
-  // const { data } = useGetFilteredBooksQuery({
-  //   title: searchTerm,
-  //   author: '',
-  //   genre: '',
-  // });
-  // const { data2 } = useGetFilteredBooksQuery({
-  //   title: '',
-  //   author: searchTerm,
-  //   genre: '',
-  // });
-  // const { data3 } = useGetFilteredBooksQuery({
-  //   title: '',
-  //   author: '',
-  //   genre: searchTerm,
-  // });
+  const { data } = useGetFilteredBooksQuery({ searchTerm, filters });
+  // const { data } = useGetFilteredBooksQuery(filters);
 
   const [isFilter, setIsFilter] = useState(false);
-  const handleSearch = (event) => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  // console.log(searchTerm);
-  // const searchTerm = 'Genre'; // Your search term
-  // fetch(`http://localhost:5000/api/v1/books/allbooks/?genre=${searchTerm}`)
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //   })
-  //   .catch((error) => console.error(error));
-
+  const addFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilters(event?.target.value);
+  };
   return (
     <div className="">
       <div className=" grid grid-cols-3">
@@ -55,21 +35,58 @@ const AllBooks = () => {
           />
 
           {isFilter ? (
-            <BsFilterRight
-              className="text-3xl my-2 ml-2 rounded bg-slate-200 hover:cursor-pointer"
-              onClick={() => setIsFilter(false)}
-            />
+            <>
+              <div>
+                <div>
+                  <BsFilterRight
+                    className="text-3xl my-2 ml-2 rounded bg-slate-200 hover:cursor-pointer"
+                    onClick={() => setIsFilter(false)}
+                  />
+                </div>
+
+                <div
+                  className="dropdown 
+                text-center"
+                >
+                  <div className="rounded-xl  bg-purple-100 px-2 py-2 ">
+                    <input
+                      type="text"
+                      placeholder="Year"
+                      className="mb-1  w-20  input input-bordered input-sm"
+                      value={filters}
+                      onChange={addFilter}
+                    />
+
+                    <input
+                      type="text"
+                      placeholder="genre"
+                      className=" mb-1 input input-bordered input-sm w-20 "
+                      onBlur={setFilters}
+                    />
+
+                    <button
+                      className=" mb-1 btn btn-accent btn-sm text-white"
+                      onClick={() => console.log(filters)}
+                    >
+                      Filter
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </>
           ) : (
-            <BsFilterLeft
-              className="text-3xl my-2 ml-2   hover:cursor-pointer"
-              onClick={() => setIsFilter(true)}
-            />
+            <>
+              <BsFilterLeft
+                className=" text-3xl my-2 ml-2   hover:cursor-pointer"
+                onClick={() => setIsFilter(true)}
+              />
+            </>
           )}
         </div>
       </div>
 
       {data ? (
-        <div className="container mt-10 grid grid-cols-2 lg:grid-cols-5 gap-12">
+        <div className="container mt-10 grid grid-cols-2 md:grid-cols-3  lg:grid-cols-5 gap-12">
           {data.data.map((book: any) => (
             <BookCard book={book} key={book._id} />
           ))}

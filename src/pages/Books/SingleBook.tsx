@@ -1,23 +1,27 @@
-import {
-  useDeleteBookMutation,
-  useSingleBookQuery,
-} from '@/redux/features/books/bookApi';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { useSingleBookQuery } from '@/redux/features/books/bookApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import DeleteBookModal from './DeleteBookModal';
 import { useState } from 'react';
 import { useAppSelector } from '@/redux/hook';
-
+interface BookData {
+  data: {
+    title: string;
+    author: string;
+    publicationDate: string;
+    reviews: number;
+    genre: string;
+  };
+}
 const SingleBook = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data } = useSingleBookQuery(id);
+  const { data } = useSingleBookQuery(id!) as BookData;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  if (!data) {
-    return;
-  }
 
-  const handleModalOpen = (id) => {
+  const handleModalOpen = (id: any) => {
     setIsModalOpen(true);
     window.id.showModal();
   };
@@ -25,8 +29,10 @@ const SingleBook = () => {
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
-
-  const { title, author, publicationDate, reviews, genre } = data.data;
+  if (!data) {
+    return;
+  }
+  const { title, author, publicationDate, reviews, genre } = data;
 
   return (
     <div className="">

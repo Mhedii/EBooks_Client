@@ -1,16 +1,26 @@
 import { api } from '@/redux/api/apiSlice';
-const searchOption = ['title', 'author', 'genre'];
+// const searchOption = ['title', 'author', 'genre'];
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getBooks: builder.query({
       query: () => '/books/allbooks',
     }),
+    getByFilter: builder.query({
+      query: (filters) => ({
+        url: `books/allbooks/?publicaitonYear=${filters || ''}&?genre=${
+          filters || ''
+        }`,
+      }),
+    }),
     getFilteredBooks: builder.query({
-      query: (searchTerm) => ({
+      query: ({ searchTerm, filters }) => ({
         url: `books/allbooks/?title=${searchTerm}&?author=${
           searchTerm || ''
-        }&?genre=${searchTerm || ''}`,
+        }&?genre=${searchTerm || ''}
+        &?genre=${filters || ''}
+        &?publicaitonYear=${filters || ''}`,
       }),
+
       // query: (params) => {
       // const queryParams = searchOption.map((a) => `${a}=${params}`).join('|');
       // const matchingOption = searchOption.find((a) => params[a]);
@@ -88,4 +98,5 @@ export const {
   useAddBookMutation,
   useDeleteBookMutation,
   useUpdateBookMutation,
+  useGetByFilterQuery,
 } = bookApi;

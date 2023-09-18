@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import useFirebase from '@/hook/useFirebase';
 
 import { useState } from 'react';
@@ -6,20 +7,28 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const Signup = () => {
-  const [signUpData, setSignUpData] = useState({});
+  interface signUpData {
+    name: string;
+    password: string;
+  }
+
+  const [signUpData, setSignUpData] = useState<signUpData>({
+    name: '',
+    password: '',
+  });
   const navigate = useNavigate();
   const location = useLocation();
   const { registerUser, loginUser, signInWithGoogle } = useFirebase();
 
-  const handleOnBlur = (e) => {
-    const field = e.target.name;
+  const handleOnBlur = (e: any) => {
+    const field = e.target.name as keyof signUpData;
     const value = e.target.value;
-    const newSignUpData = { ...signUpData, signUpData };
+    const newSignUpData = { ...signUpData };
     newSignUpData[field] = value;
     setSignUpData(newSignUpData);
   };
 
-  const handleSignUp = async (data) => {
+  const handleSignUp = async (data: any) => {
     if (
       data.name == '' ||
       data.email == '' ||
@@ -46,36 +55,18 @@ const Signup = () => {
       toast('Passwords does not match');
       return;
     }
-    // if (data.password == null && data.confirmPassword == null) {
-    //   return;
-    // }
 
-    // if (
-    //   (data.email != null,
-    //   data.password != null,
-    //   data.name != null &&
-    //     data.password === data.confirmPassword &&
-    //     data.password != '')
-    // ) {
     try {
       await registerUser(data.email, data.password, data.name, navigate);
       {
         toast('Signup Succesfully');
-        setSignUpData({});
+
         loginUser(data.email, data.password, location, navigate);
         reset();
       }
     } catch (error) {
-      // if (error.code === 'auth/email-already-in-use') {
-      //   toast('Email address is already in use.');
-      // } else if (error.code === 'auth/weak-password') {
-      //   toast('Password is too weak.');
-      // } else {
-      //   toast('An error occurred during sign-up.');
-      // }
       console.error('Firebase Authentication Error:', error);
     }
-    // }
   };
   const handleGoogleSignIn = () => {
     signInWithGoogle(location, navigate);
@@ -83,7 +74,7 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+
     reset,
   } = useForm();
   return (
@@ -133,7 +124,7 @@ const Signup = () => {
                 className="input input-bordered mb-5 input-md w-full max-w-xs"
                 onBlur={handleOnBlur}
               />
-              {errors.password && <p>{errors.password.message}</p>}
+              {/* {errors.password && <p>{errors.password.message}</p>} */}
 
               <br />
               <input

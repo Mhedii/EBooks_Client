@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import initializeAuthentication from '@/firebase/firebase.init';
 import { useAuthActions } from '@/redux/features/auth/user.actions';
 import {
@@ -15,25 +17,20 @@ import { useEffect, useState } from 'react';
 initializeAuthentication();
 
 const useFirebase = () => {
-  // const [authError, setAuthError] = useState('');
-  // const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  // const [admin, setAdmin] = useState(false);
-
   const googleProvider = new GoogleAuthProvider();
   const auth = getAuth();
 
-  const { setUser, setLoading, setAuthError, setAdmin, login, logout } =
-    useAuthActions();
+  const { setUser, setLoading, setAuthError, login, logout } = useAuthActions();
 
   useEffect(() => {
     setLoading(true);
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser({
-          email: user?.email,
-          displayName: user?.displayName,
+          email: user?.email || '',
+          displayName: user?.displayName || '',
         });
       } else {
         setUser(null);
@@ -42,11 +39,12 @@ const useFirebase = () => {
     });
   }, [auth]);
 
-  const signInWithGoogle = (location, navigate) => {
+  const signInWithGoogle = (location: any, navigate: any) => {
     setIsLoading(true);
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const user = result.user;
+        console.log(user);
         // saveUser(user.email, user.displayName, 'PUT');
         setAuthError('');
         const destination = location?.state?.from || '/';
@@ -58,7 +56,12 @@ const useFirebase = () => {
       .finally(() => setIsLoading(false));
   };
 
-  const registerUser = (email, password, name, navigate) => {
+  const registerUser = (
+    email: any,
+    password: any,
+    name: any,
+    navigate: any
+  ) => {
     setIsLoading(true);
 
     createUserWithEmailAndPassword(auth, email, password)
@@ -66,7 +69,7 @@ const useFirebase = () => {
         const user = userCredential.user;
         setAuthError('');
         const newUser = { email, displayName: name };
-        setUser({ newUser });
+        setUser(newUser);
         saveUser(email, name, password, 'POST');
         // updateProfile(auth.currentUser, {
         //   displayName: name,
@@ -90,10 +93,16 @@ const useFirebase = () => {
       .finally(() => setIsLoading(false));
   };
 
-  const loginUser = (email, password, location, navigate) => {
+  const loginUser = (
+    email: any,
+    password: any,
+    location: any,
+    navigate: any
+  ) => {
     setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      // .then((userCredential) => {
+      .then(() => {
         const destination = location?.state?.from || '/';
         login(true);
         navigate(destination);
@@ -109,12 +118,12 @@ const useFirebase = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser({
-          email: user?.email,
-          displayName: user?.displayName,
+          email: user?.email || '',
+          displayName: user?.displayName || '',
         });
         login(true);
       } else {
-        setUser({});
+        // setUser({});
       }
       setIsLoading(false);
     });
@@ -124,11 +133,16 @@ const useFirebase = () => {
     setIsLoading(true);
     logout();
     signOut(auth)
-      .then(() => {})
+      .then()
       .finally(() => setIsLoading(false));
   };
 
-  const saveUser = (email, displayName, password, method) => {
+  const saveUser = (
+    email: any,
+    displayName: any,
+    password: any,
+    method: any
+  ) => {
     const user = { email, displayName, password };
     fetch('https://eb-ooks-backend.vercel.app/api/v1/auth/signup', {
       method: method,
@@ -147,7 +161,6 @@ const useFirebase = () => {
     setError,
     loginUser,
     registerUser,
-    // admin,
   };
 };
 

@@ -2,8 +2,9 @@ import { useDeleteBookMutation } from '@/redux/features/books/bookApi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-function DeleteBookModal({ isOpen, onClose, id }) {
-  const [deleteBook, { isLoading }] = useDeleteBookMutation();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function DeleteBookModal({ onClose, id }: any) {
+  const [deleteBook] = useDeleteBookMutation();
   const navigate = useNavigate();
   const handleDelete = () => {
     deleteBook(id);

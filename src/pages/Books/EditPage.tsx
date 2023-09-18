@@ -1,37 +1,40 @@
-import React, { FormEvent, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
 import {
-  useAddBookMutation,
   useSingleBookQuery,
   useUpdateBookMutation,
 } from '@/redux/features/books/bookApi';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
-const EditBook = () => {
-  const { id } = useParams();
-  const { data } = useSingleBookQuery(id);
-  interface IaddBookData {
+
+interface IaddBookData {
+  data: {
+    data: {
+      title: any;
+      author: any;
+      publicaitonDate: any;
+      anotherAuthor: any;
+      genre: any;
+    };
     title: string;
     author: string;
     anotherAuthor?: string;
     genre: string;
     publicaitonYear: number;
     publicaitonDate: string;
-  }
-  const {
-    title,
-    author,
-    publicaitonDate,
+  };
+}
 
-    anotherAuthor,
-    genre,
-  } = data.data;
+const EditBook = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  const [selected, setSelected] = useState(new Date(publicaitonDate));
   const [isOpen, setIsOpen] = useState(false);
 
   const { register, handleSubmit, reset } = useForm<IaddBookData>();
@@ -39,15 +42,17 @@ const EditBook = () => {
     setIsOpen(!isOpen);
   };
 
+  const { data } = useSingleBookQuery(id!) as IaddBookData;
+  const { title, author, publicaitonDate, anotherAuthor, genre } = data.data;
+
+  const [selected] = useState(new Date(publicaitonDate));
   const [updateBook] = useUpdateBookMutation();
-  const navigate = useNavigate();
-  const onSubmit: SubmitHandler<IaddBookData> = (data) => {
+  const onSubmit: SubmitHandler<IaddBookData> = () => {
     const options = {
-      // image: data.image,
-      title: data?.title,
-      author: data?.author,
-      anotherAuthor: data?.anotherAuthor,
-      genre: data?.genre,
+      title: title,
+      author: author,
+      anotherAuthor: anotherAuthor,
+      genre: genre,
       publicaitonYear: format(selected, 'Y'),
       publicaitonDate: format(selected, 'P'),
       // reviews: 4,
@@ -69,7 +74,7 @@ const EditBook = () => {
           <br />
           <label>Book Title</label>
           <input
-            {...register('title')}
+            {...register('data.title')}
             type="text"
             defaultValue={title}
             className="input input-bordered input-md w-full "
@@ -77,7 +82,7 @@ const EditBook = () => {
           <br />
           <label>Author</label>
           <input
-            {...register('author')}
+            {...register('data.author')}
             type="text"
             defaultValue={author}
             className="input input-bordered input-md w-full "
@@ -85,7 +90,7 @@ const EditBook = () => {
           <br />
           <p>Or Add Other Author:</p>
           <input
-            {...register('anotherAuthor')}
+            {...register('data.anotherAuthor')}
             type="text"
             defaultValue={anotherAuthor}
             className="input input-bordered input-md w-full "
@@ -93,7 +98,7 @@ const EditBook = () => {
           <br />
           <label>Genre</label>
           <input
-            {...register('genre')}
+            {...register('data.genre')}
             type="text"
             defaultValue={genre}
             className="input input-bordered input-md w-full "
@@ -103,10 +108,10 @@ const EditBook = () => {
             <label className="mr-3">Publication Date:</label>
             {isOpen ? (
               <DayPicker
-                {...register('publicaitonDate')}
+                {...register('data.publicaitonDate')}
                 mode="single"
                 selected={selected}
-                onSelect={setSelected}
+                // onSelect={setSelected}
                 onDayClick={() => setIsOpen(false)}
               />
             ) : (

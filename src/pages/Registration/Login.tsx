@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -5,14 +6,22 @@ import { useForm } from 'react-hook-form';
 import useFirebase from '@/hook/useFirebase';
 
 const Login = () => {
-  const [loginData, setLoginData] = useState({});
   const { signInWithGoogle, loginUser } = useFirebase();
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleOnChange = (e) => {
-    const field = e.target.name;
+  interface LoginData {
+    username: string;
+    password: string;
+  }
+
+  const [loginData, setLoginData] = useState<LoginData>({
+    username: '',
+    password: '',
+  });
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const field = e.target.name as keyof LoginData;
     const value = e.target.value;
     const newLoginData = { ...loginData };
     newLoginData[field] = value;
@@ -86,43 +95,6 @@ const Login = () => {
                   </Link>
                 </p>
               </form>
-              {/* <form onSubmit={handleLoginSubmit}> */}
-              {/* <input type="email" className="w-40" onChange={handleOnChange} /> */}
-              {/* <TextField
-                className="your-email"
-                sx={{ width: '40%', m: 1 }}
-                id="standard-basic"
-                label="Your Email"
-                name="email"
-                onChange={handleOnChange}
-                required
-              />{' '}
-              <br />
-              <TextField
-                sx={{ width: '40%', m: 1 }}
-                id="standard-basic"
-                label="Your Password"
-                type="password"
-                name="password"
-                onChange={handleOnChange}
-                required
-              />
-              <br />
-              <button
-                sx={{ width: '50%', m: 1 }}
-                type="submit"
-                className="login-btn"
-              >
-                {' '}
-                Login{' '}
-              </button>
-              <p className="create-account">
-                Not registered yet?{' '}
-                <NavLink to="/register" className="create-new">
-                  Create an Account
-                </NavLink>
-              </p> */}
-              {/* </form> */}
             </div>
           </div>
         </div>
