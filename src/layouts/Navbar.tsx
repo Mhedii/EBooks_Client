@@ -42,6 +42,13 @@ const Navbar = () => {
             ) : (
               ''
             )}
+            {isAuthenticate ? (
+              <li>
+                <Link to="/wishlist">Wishlist</Link>
+              </li>
+            ) : (
+              ''
+            )}
           </ul>
         </div>
 
@@ -61,6 +68,13 @@ const Navbar = () => {
           ) : (
             ''
           )}
+          {isAuthenticate ? (
+            <li>
+              <Link to="/wishlist">Wishlist</Link>
+            </li>
+          ) : (
+            ''
+          )}
         </ul>
       </div>
       <div className="navbar-end gap-4">
@@ -68,12 +82,12 @@ const Navbar = () => {
         {!isAuthenticate ? (
           <>
             <div className="">
-              <Link to="/login" className="btn">
+              <Link to="/login" className="btn btn-neutral font-bold">
                 Login
               </Link>
             </div>
             <div className="">
-              <Link to="/signup" className="btn">
+              <Link to="/signup" className="btn btn-neutral font-bold">
                 Sign Up
               </Link>
             </div>
@@ -81,7 +95,11 @@ const Navbar = () => {
         ) : (
           <>
             <div className="">
-              <Link to="/" className="btn" onClick={handleLogOut}>
+              <Link
+                to="/"
+                className="btn btn-neutral font-bold"
+                onClick={handleLogOut}
+              >
                 Log out
               </Link>
             </div>

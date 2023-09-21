@@ -1,12 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useSingleBookQuery } from '@/redux/features/books/bookApi';
+import {
+  useAddReviewMutation,
+  useDeleteBookMutation,
+  useSingleBookQuery,
+} from '@/redux/features/books/bookApi';
 import { useNavigate, useParams } from 'react-router-dom';
-import DeleteBookModal from './DeleteBookModal';
-import { useState } from 'react';
 import { useAppSelector } from '@/redux/hook';
+import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+
 interface BookData {
   data: {
+    data: {
+      _id: any;
+      title: any;
+      author: any;
+      publicationDate: any;
+      reviews: any;
+      genre: any;
+    };
     title: string;
     author: string;
     publicationDate: string;
@@ -18,34 +32,46 @@ const SingleBook = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data } = useSingleBookQuery(id!) as BookData;
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const { handleSubmit, register, reset } = useForm();
+  const [allReview, setAllReview] = useState(data?.data.reviews);
+  const [deleteBook] = useDeleteBookMutation();
+  const [AddReview] = useAddReviewMutation();
 
-  const handleModalOpen = (id: any) => {
-    setIsModalOpen(true);
-    window.id.showModal();
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
   if (!data) {
     return;
   }
-  const { title, author, publicationDate, reviews, genre } = data;
+  const { title, author, publicationDate, reviews, genre, _id } = data.data;
+  const handleDelete = () => {
+    deleteBook(_id);
+    toast('Delete Successfully');
+    navigate('/');
+  };
 
+  const onSubmit = async (data: any) => {
+    const review = data.review;
+    await AddReview({
+      _id,
+      data: {
+        reviews: [review],
+      },
+    });
+    setAllReview([...allReview, review]);
+    toast('Review Added Successfully');
+    reset();
+  };
   return (
     <div className="">
       <div className="container ">
-        <div className=" flex">
+        <div className=" flex container justify-evenly">
           <div>
             <img
               src="https://ds.rokomari.store/rokomari110/ProductNew20190903/260X372/4cf25a33d8a4_86392.gif "
-              className="image-full h-72"
+              className="image-full h-72 rounded-xl"
               alt=""
             />
           </div>
-          <div className="grid grid-cols-2 items-center">
+          <div className="grid  items-center">
             <div className="text-lg col-start-2 ">
               <h1 className="">
                 Name Of The Book:{' '}
@@ -61,7 +87,8 @@ const SingleBook = () => {
               <h2>
                 Publication Date : {publicationDate ? publicationDate : 'N/A'}
               </h2>
-              <h2>Reviews : {reviews}</h2>
+              {/* <h2>Reviews : {reviews}</h2> */}
+
               <div className="">
                 {isAuthenticated ? (
                   <>
@@ -74,23 +101,63 @@ const SingleBook = () => {
                       </button>
                       <button
                         className="btn-error rounded px-4 py-1"
-                        onClick={handleModalOpen}
+                        onClick={() =>
+                          document.getElementById(_id)?.showModal()
+                        }
                       >
                         Delete
                       </button>
-                      {isModalOpen && (
-                        <DeleteBookModal
-                          isOpen={isModalOpen}
-                          onClose={handleModalClose}
-                          id={id}
-                        />
-                      )}
+
+                      <dialog id={_id} className="modal">
+                        <form method="dialog" className="modal-box">
+                          <h3 className="font-bold text-lg">Hello!</h3>
+                          <p>Are you sure you want to delete this book?</p>
+                          <div className="modal-action">
+                            <button
+                              className="btn btn-primary mr-2"
+                              onClick={handleDelete}
+                            >
+                              Delete
+                            </button>
+                            <button className="btn">Cancel</button>
+                          </div>
+                        </form>
+                      </dialog>
                     </div>
                   </>
                 ) : (
                   <></>
                 )}
               </div>
+              {isAuthenticated ? (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="mt-2">
+                    <textarea
+                      {...register('review')}
+                      placeholder="Plase Give a Review"
+                      className="textarea textarea-bordered textarea-lg w-full max-w-xs"
+                    ></textarea>
+                    <button className="btn btn-neutral" type="submit">
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <></>
+              )}
+              <p className="mt-2 text-sm font-semibold">Last 3 Reviews</p>
+              {allReview ? (
+                allReview
+                  .slice(-3)
+                  .reverse()
+                  .map((review: any) => (
+                    <>
+                      <p className="text-sm ">{review}</p>
+                    </>
+                  ))
+              ) : (
+                <p></p>
+              )}
             </div>
           </div>
         </div>

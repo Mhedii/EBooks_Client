@@ -1,8 +1,10 @@
 import Books from './Books';
+import Header from './Header';
 
 const Home = () => {
   return (
-    <div>
+    <div className="">
+      {/* <Header /> */}
       <Books />
     </div>
   );

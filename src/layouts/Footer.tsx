@@ -10,8 +10,8 @@ const Footer = () => {
   const date = new Date();
   const year = date.getFullYear();
   return (
-    <div className=" bg-base-200">
-      <footer className="  container footer py-10 bg-base-200 text-base-content grid grid-cols-4">
+    <div className=" bg-[#e1dcc5] mt-10">
+      <footer className="  container footer py-10 bg-[#e1dcc5] text-base-content grid grid-cols-4">
         <div className="row-span-2">
           <div className="mb-4 ">
             <Link to="/" className="text-4xl font-semibold">
@@ -106,7 +106,7 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-      <footer className=" px-10 py-4 border-t bg-base-200 text-base-content border-base-300">
+      <footer className=" px-10 py-4 border-t  text-base-content border-base-300">
         <p className="text-center items-center justify-center">
           © {year} EBooks.com
         </p>

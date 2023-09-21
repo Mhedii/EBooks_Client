@@ -40,7 +40,6 @@ const AddBook = () => {
       publicaitonDate: format(selected!, 'P'),
       reviews: 4,
     };
-    console.log(options);
     AddBook(options);
     toast('Book Added Successfully');
     setIsOpen(!isOpen);

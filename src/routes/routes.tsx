@@ -8,6 +8,7 @@ import Books from '@/pages/Home/Books';
 import Home from '@/pages/Home/Home';
 import Login from '@/pages/Registration/Login';
 import Signup from '@/pages/Registration/Signup';
+import WishList from '@/pages/WishList/WishList';
 // import { useGetuserQuery } from '@/redux/features/auth/authApi';
 // import { useAppSelector } from '@/redux/hook';
 import { createBrowserRouter } from 'react-router-dom';
@@ -41,6 +42,10 @@ const routes = createBrowserRouter([
       {
         path: '/signup',
         element: <Signup />,
+      },
+      {
+        path: '/wishlist',
+        element: <WishList />,
       },
       // {
       //   path: '/dashboard',

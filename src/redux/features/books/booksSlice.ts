@@ -10,8 +10,8 @@ interface IBook {
   isMarked: boolean;
   searchTerm: string;
   wishlist: object;
-  readingList: object;
-  finishedList: object;
+  readingList: object[];
+  finishedList: object[];
 }
 const initialState: IBook = {
   title: '',
@@ -34,10 +34,10 @@ const booksSlice = createSlice({
       console.log(state, action);
     },
     moveBookToReading(state, action) {
-      state.readingList = action.payload;
+      state.readingList = [...state.readingList, ...action.payload];
     },
     moveBookToFinished(state, action) {
-      console.log(state, action);
+      state.finishedList = [...state.finishedList, ...action.payload];
     },
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
