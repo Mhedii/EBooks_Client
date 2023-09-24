@@ -52,7 +52,7 @@ const BookCard = (book: any) => {
           <div>
             <img
               src="https://ds.rokomari.store/rokomari110/ProductNew20190903/260X372/4cf25a33d8a4_86392.gif "
-              className="rounded-xl image-full h-40 w-40"
+              className="rounded-xl image-full h-40 w-40 "
               alt=""
             />
             <h2 className="card-title  lg:text-lg text-sm ">

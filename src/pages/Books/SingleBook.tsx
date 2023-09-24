@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '@/redux/hook';
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface BookData {
   data: {
@@ -17,31 +17,41 @@ interface BookData {
       _id: any;
       title: any;
       author: any;
-      publicationDate: any;
+      publicaitonDate: any;
       reviews: any;
       genre: any;
     };
     title: string;
     author: string;
-    publicationDate: string;
+    publicaitonDate: string;
     reviews: number;
     genre: string;
   };
 }
 const SingleBook = () => {
+  const { handleSubmit, register, reset } = useForm();
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data } = useSingleBookQuery(id!) as BookData;
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const { handleSubmit, register, reset } = useForm();
-  const [allReview, setAllReview] = useState(data?.data.reviews);
-  const [deleteBook] = useDeleteBookMutation();
+  const { data } = useSingleBookQuery(id);
+
   const [AddReview] = useAddReviewMutation();
+  const [deleteBook] = useDeleteBookMutation();
+
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+
+  // const [allReview, setAllReview] = useState(data ? data.data.reviews : []);
+  const [allReview, setAllReview] = useState<string[]>([]);
+  useEffect(() => {
+    if (data) {
+      setAllReview(data.data.reviews);
+    }
+  }, [data]);
 
   if (!data) {
-    return;
+    return <p>Loading.......</p>;
   }
-  const { title, author, publicationDate, reviews, genre, _id } = data.data;
+
+  const { title, author, publicaitonDate, genre, _id } = data.data;
   const handleDelete = () => {
     deleteBook(_id);
     toast('Delete Successfully');
@@ -85,7 +95,7 @@ const SingleBook = () => {
               </h2>
               <h2>Genre : {genre}</h2>
               <h2>
-                Publication Date : {publicationDate ? publicationDate : 'N/A'}
+                Publication Date : {publicaitonDate ? publicaitonDate : 'N/A'}
               </h2>
               {/* <h2>Reviews : {reviews}</h2> */}
 
@@ -152,7 +162,9 @@ const SingleBook = () => {
                   .reverse()
                   .map((review: any) => (
                     <>
-                      <p className="text-sm ">{review}</p>
+                      <p className="text-sm " key={review}>
+                        {review}
+                      </p>
                     </>
                   ))
               ) : (

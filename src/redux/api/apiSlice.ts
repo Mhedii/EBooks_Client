@@ -6,6 +6,6 @@ export const api = createApi({
     // baseUrl: 'https://eb-ooks-backend.vercel.app/api/v1',
     baseUrl: 'http://localhost:5000/api/v1/',
   }),
-  tagTypes: ['books', 'auth'],
+  tagTypes: ['IBook', 'books', 'auth'],
   endpoints: () => ({}),
 });

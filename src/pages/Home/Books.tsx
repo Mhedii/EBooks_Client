@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetBooksQuery } from '@/redux/features/books/bookApi';
 import BookCard from './BookCard';
+import { useEffect } from 'react';
 
 const Books = () => {
-  const { data } = useGetBooksQuery({});
+  const { data, refetch } = useGetBooksQuery({});
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <div className="">

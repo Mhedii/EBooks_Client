@@ -38,7 +38,7 @@ const AddBook = () => {
       genre: data.genre,
       publicaitonYear: format(selected!, 'Y'),
       publicaitonDate: format(selected!, 'P'),
-      reviews: 4,
+      // reviews: 4,
     };
     AddBook(options);
     toast('Book Added Successfully');

@@ -3776,6 +3776,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+swiper@^10.3.0:
+  version "10.3.0"
+  resolved "https://registry.npmjs.org/swiper/-/swiper-10.3.0.tgz"
+  integrity sha512-o81KZH4phL/dJxKFWpZ/zf78QxOyFMood+c86vJJO0ZeSOoniyzV8HWDsw12KOlQdm4WRxrc/6kfGImAcxcS3w==
+
 tailwind-merge@^1.13.0:
   version "1.13.0"
   resolved "https://registry.npmjs.org/tailwind-merge/-/tailwind-merge-1.13.0.tgz"

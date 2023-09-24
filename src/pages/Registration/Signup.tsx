@@ -74,7 +74,7 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
-
+    formState: { errors },
     reset,
   } = useForm();
   return (
@@ -118,18 +118,29 @@ const Signup = () => {
               <br />
 
               <input
-                {...register('password', { required: true })}
-                type="text"
+                {...register('password', {
+                  required: true,
+                  minLength: {
+                    value: 6,
+                    message: 'Password Should be atleast 6 characters',
+                  },
+                })}
+                type="password"
                 placeholder="Your Password"
                 className="input input-bordered mb-5 input-md w-full max-w-xs"
                 onBlur={handleOnBlur}
               />
-              {/* {errors.password && <p>{errors.password.message}</p>} */}
+              {/* {errors.password && (<p>{errors.password.message}</p>)} */}
+              {errors.password && (
+                <p className="text-red-700">
+                  {String(errors.password.message)}
+                </p>
+              )}
 
               <br />
               <input
                 {...register('confirmPassword', { required: true })}
-                type="text"
+                type="password"
                 placeholder="Confirm Password"
                 className="input input-bordered mb-5 input-md w-full max-w-xs"
                 onBlur={handleOnBlur}
@@ -144,7 +155,7 @@ const Signup = () => {
               <p className="">
                 Have Account?{' '}
                 <Link
-                  to="/signup"
+                  to="/login"
                   className="text-blue-700 hover:cursor-pointer"
                 >
                   Login

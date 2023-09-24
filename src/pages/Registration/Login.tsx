@@ -73,7 +73,7 @@ const Login = () => {
 
                 <input
                   {...register('password')}
-                  type="text"
+                  type="password"
                   onChange={handleOnChange}
                   placeholder="Your Password"
                   className="input input-bordered mb-5 input-md w-full max-w-xs"

@@ -33,6 +33,9 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
               <Link to="/allbooks">All Books</Link>
             </li>
             {isAuthenticate ? (
@@ -58,6 +61,9 @@ const Navbar = () => {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal text-lg px-1">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
           <li>
             <Link to="/allbooks">All Books</Link>
           </li>

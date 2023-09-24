@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
@@ -16,6 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 interface IaddBookData {
   data: {
     data: {
+      _id: any;
       title: any;
       author: any;
       publicaitonDate: any;
@@ -43,24 +44,39 @@ const EditBook = () => {
   };
 
   const { data } = useSingleBookQuery(id!) as IaddBookData;
-  const { title, author, publicaitonDate, anotherAuthor, genre } = data.data;
+  const { _id, title, author, publicaitonDate, anotherAuthor, genre } =
+    data.data;
 
-  const [selected] = useState(new Date(publicaitonDate));
+  // const [selected] = useState(new Date(publicaitonDate));
+  // const [selected, setSelected] = React.useState<Date>(publicaitonDate);
+  const [selected, setSelected] = React.useState<Date>(
+    new Date(publicaitonDate)
+  );
+
   const [updateBook] = useUpdateBookMutation();
-  const onSubmit: SubmitHandler<IaddBookData> = () => {
+
+  const onSubmit = async (data: any) => {
     const options = {
-      title: title,
-      author: author,
-      anotherAuthor: anotherAuthor,
-      genre: genre,
-      publicaitonYear: format(selected, 'Y'),
-      publicaitonDate: format(selected, 'P'),
+      _id,
+      data: {
+        title: data.data.title,
+        author: data.data.author,
+        anotherAuthor: data.data.anotherAuthor,
+        genre: data.data.genre,
+        publicaitonYear: format(selected, 'Y'),
+        publicaitonDate: format(selected, 'P'),
+      },
       // reviews: 4,
     };
-    updateBook(options);
-    toast('Book Update Successfully');
-    reset();
-    navigate('/');
+
+    try {
+      updateBook(options);
+      toast('Book Update Successfully');
+      reset();
+      navigate('/');
+    } catch (error) {
+      toast('Update Unsuccessfull');
+    }
   };
   return (
     <div>
@@ -112,6 +128,12 @@ const EditBook = () => {
                 mode="single"
                 selected={selected}
                 // onSelect={setSelected}
+                onSelect={(value: Date | undefined) => {
+                  if (value) {
+                    setSelected(value);
+                  }
+                  setIsOpen(false);
+                }}
                 onDayClick={() => setIsOpen(false)}
               />
             ) : (

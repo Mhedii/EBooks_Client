@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  // useGetBooksQuery,
-  useGetFilteredBooksQuery,
-} from '@/redux/features/books/bookApi';
+import { useGetFilteredBooksQuery } from '@/redux/features/books/bookApi';
 import { BsFilterLeft, BsFilterRight } from 'react-icons/bs';
 import { useState } from 'react';
 import BookCard from '../Home/BookCard';
+import { useForm } from 'react-hook-form';
 
 const AllBooks = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState('');
-
+  const [filters, setFilters] = useState({});
+  const { handleSubmit, register, reset } = useForm();
   const { data } = useGetFilteredBooksQuery({ searchTerm, filters });
   // const { data } = useGetFilteredBooksQuery(filters);
 
@@ -19,9 +17,69 @@ const AllBooks = () => {
     setSearchTerm(event.target.value);
   };
 
-  const addFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters(event?.target.value);
+  const onSubmit = async (data: any) => {
+    // let filterString = '';
+    const filter = {
+      genre: data.genre,
+      publicaitonYear: data.year,
+    };
+
+    // data.genre
+    //   ? (filterString += `genre=${data.genre}&`)
+    //   : (filterString += `genre=''&`);
+    // data.year
+    //   ? (filterString += `publicaitonYear=${data.year}`)
+    //   : (filterString += `publicaitonYear=''`);
+    // data.genre
+    //   ? (filterString += `genre=${data.genre}&`)
+    //   : (filterString += `genre=''&`);
+    // data.year
+    //   ? (filterString += `publicaitonYear=${data.year}`)
+    //   : (filterString += `publicaitonYear=''`);
+    // setYear(data.Year);
+    setFilters(filter);
+    // console.log(filters);
+
+    // const review = data.review;
+    // await AddReview({
+    //   _id,
+    //   data: {
+    //     reviews: [review],
+    //   },
+    // });
+    // setAllReview([...allReview, review]);
+    // toast('Review Added Successfully');
+    // reset();
+
+    // const a = data.data.filter((item) => {
+    //   if (item.genre && item.year) {
+    //     return item.genre === genre && item.publicaitonYear === year;
+    //   } else if (genre) {
+    //     return item.genre === genre;
+    //   } else if (year) {
+    //     return item.publicaitionYear === year;
+    //   }
+    //   return true;
+    // });
+    // console.log('a', a);
   };
+
+  // const filteredData = (data) => {
+  //   console.log('Aita', data);
+  //   data.data.filter((item) => {
+  //     if (item.genre && item.year) {
+  //       return item.genre === genre && item.publicaitonYear === year;
+  //     } else if (genre) {
+  //       return item.genre === genre;
+  //     } else if (year) {
+  //       return item.publicaitionYear === year;
+  //     }
+  //     return true;
+  //   });
+  // };
+  // console.log(() => filteredData);
+
+  console.log(filters);
   return (
     <div className="">
       <div className=" grid grid-cols-3">
@@ -49,27 +107,27 @@ const AllBooks = () => {
                 text-center"
                 >
                   <div className="rounded-xl  bg-purple-100 px-2 py-2 ">
-                    <input
-                      type="text"
-                      placeholder="Year"
-                      className="mb-1  w-20  input input-bordered input-sm"
-                      value={filters}
-                      onChange={addFilter}
-                    />
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                      <input
+                        type="text"
+                        placeholder="Year"
+                        className="mb-1  w-20  input input-bordered input-sm"
+                        {...register('year')}
+                      />
 
-                    <input
-                      type="text"
-                      placeholder="genre"
-                      className=" mb-1 input input-bordered input-sm w-20 "
-                      onBlur={setFilters}
-                    />
-
-                    <button
-                      className=" mb-1 btn btn-accent btn-sm text-white"
-                      onClick={() => console.log(filters)}
-                    >
-                      Filter
-                    </button>
+                      <input
+                        type="text"
+                        placeholder="genre"
+                        {...register('genre')}
+                        className=" mb-1 input input-bordered input-sm w-20 "
+                      />
+                      <button
+                        className=" mb-1 btn btn-accent btn-sm text-white"
+                        type="submit"
+                      >
+                        Filter
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>

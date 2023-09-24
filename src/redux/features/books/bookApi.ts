@@ -13,14 +13,25 @@ const bookApi = api.injectEndpoints({
     }),
     getFilteredBooks: builder.query({
       query: ({ searchTerm, filters }) => ({
-        url: `books/allbooks/?title=${searchTerm}&?author=${
-          searchTerm || ''
-        }&?genre=${searchTerm || ''}
-        &?genre=${filters || ''}
-        &?publicaitonYear=${filters || ''}`,
+        url: `books/allbooks/?title=${searchTerm}&author=${searchTerm}&${
+          filters.publicaitonYear
+            ? `publicaitonYear=${filters.publicaitonYear}`
+            : ''
+        }&${filters.genre ? `genre=${filters.genre}` : ''}`,
       }),
     }),
-    singleBook: builder.query<object, string>({
+
+    //   url: `books/allbooks/?title=${searchTerm}
+    //   &?author=${
+    //     searchTerm || ''
+    //   }&?genre=${searchTerm || ''}
+    //   &?genre=${filters.genre || ''}
+    //   &?publicaitonYear=${filters.publicaitonYear || ''}`,
+    // }),
+    // singleBook: builder.query<object, string>({
+    //   query: (id) => `/books/${id}`,
+    // }),
+    singleBook: builder.query({
       query: (id) => `/books/${id}`,
     }),
     AddBook: builder.mutation({
@@ -39,15 +50,16 @@ const bookApi = api.injectEndpoints({
         body: data,
       }),
 
-      invalidatesTags: ['books'],
+      invalidatesTags: ['IBook'],
     }),
     updateBook: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `books/${id}`,
-        method: 'PUT',
+      query: ({ _id, data }) => ({
+        url: `books/${_id}`,
+        method: 'PATCH',
         body: data,
       }),
-      invalidatesTags: ['books'],
+
+      invalidatesTags: ['IBook'],
     }),
     deleteBook: builder.mutation<void, string>({
       query: (id) => ({
