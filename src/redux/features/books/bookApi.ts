@@ -50,7 +50,7 @@ const bookApi = api.injectEndpoints({
         body: data,
       }),
 
-      invalidatesTags: ['IBook'],
+      invalidatesTags: ['books'],
     }),
     updateBook: builder.mutation({
       query: ({ _id, data }) => ({
@@ -59,7 +59,7 @@ const bookApi = api.injectEndpoints({
         body: data,
       }),
 
-      invalidatesTags: ['IBook'],
+      invalidatesTags: ['books'],
     }),
     deleteBook: builder.mutation<void, string>({
       query: (id) => ({

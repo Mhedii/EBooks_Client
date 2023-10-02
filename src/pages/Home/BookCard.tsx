@@ -33,12 +33,12 @@ const BookCard = (book: any) => {
     setIsFinishMark(true);
   };
   useEffect(() => {
-    isReading.map((match) => {
+    isReading.map((match: any) => {
       if (match._id == _id) {
         setIsMark(true);
       }
     });
-    isFinished.map((finish) => {
+    isFinished.map((finish: any) => {
       if (finish._id == _id) {
         setIsFinishMark(true);
       }

@@ -18,7 +18,7 @@ const WishList = () => {
           </tr>
         </thead>
       </table>
-      {isReading.map((wishlist) => (
+      {isReading.map((wishlist: any) => (
         <WishlistCard wishlist={wishlist} key={wishlist._id} />
       ))}
     </div>

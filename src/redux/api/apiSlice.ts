@@ -4,7 +4,9 @@ export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     // baseUrl: 'https://eb-ooks-backend.vercel.app/api/v1',
-    baseUrl: 'http://localhost:5000/api/v1/',
+    // baseUrl: 'http://localhost:5000/api/v1',
+    baseUrl:
+      'https://eb-ooks-backend-7vm90o63e-anoarmehedi-gmailcom.vercel.app/api/v1/',
   }),
   tagTypes: ['IBook', 'books', 'auth'],
   endpoints: () => ({}),

@@ -31,6 +31,7 @@ const booksSlice = createSlice({
   initialState,
   reducers: {
     books: (state, action) => {
+      console.log(state);
       state = action.payload;
     },
     moveBookToReading(state, action) {

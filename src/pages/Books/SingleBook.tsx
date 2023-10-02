@@ -11,23 +11,23 @@ import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 
-interface BookData {
-  data: {
-    data: {
-      _id: any;
-      title: any;
-      author: any;
-      publicaitonDate: any;
-      reviews: any;
-      genre: any;
-    };
-    title: string;
-    author: string;
-    publicaitonDate: string;
-    reviews: number;
-    genre: string;
-  };
-}
+// interface BookData {
+//   data: {
+//     data: {
+//       _id: any;
+//       title: any;
+//       author: any;
+//       publicaitonDate: any;
+//       reviews: any;
+//       genre: any;
+//     };
+//     title: string;
+//     author: string;
+//     publicaitonDate: string;
+//     reviews: number;
+//     genre: string;
+//   };
+// }
 const SingleBook = () => {
   const { handleSubmit, register, reset } = useForm();
   const { id } = useParams();
@@ -112,7 +112,9 @@ const SingleBook = () => {
                       <button
                         className="btn-error rounded px-4 py-1"
                         onClick={() =>
-                          document.getElementById(_id)?.showModal()
+                          (
+                            document.getElementById(_id) as HTMLDialogElement
+                          )?.showModal()
                         }
                       >
                         Delete

@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 const AllBooks = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState({});
-  const { handleSubmit, register, reset } = useForm();
+  const { handleSubmit, register } = useForm();
   const { data } = useGetFilteredBooksQuery({ searchTerm, filters });
   // const { data } = useGetFilteredBooksQuery(filters);
 
